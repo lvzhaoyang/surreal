@@ -37,7 +37,7 @@ The structure of the folders is as follows:
 SURREAL/data/
 ------------- cmu/  # using MoCap from CMU dataset
 -------------------- train/
--------------------- val/ # small subset of test 
+-------------------- val/ # small subset of test
 -------------------- test/
 ----------------------------  run0/ #50% overlap
 ----------------------------  run1/ #30% overlap
@@ -96,7 +96,7 @@ smpl_data/
  # trans*           [T x 3]     - (T: number of frames in MoCap sequence)
  # pose*            [T x 72]    - SMPL pose parameters (T: number of frames in MoCap sequence)
  # maleshapes       [1700 x 10] - SMPL shape parameters for 1700 male scans
- # femaleshapes     [2103 x 10] - SMPL shape parameters for 2103 female scans 
+ # femaleshapes     [2103 x 10] - SMPL shape parameters for 2103 female scans
  # regression_verts [232]
  # joint_regressor  [24 x 232]
 ```
@@ -107,19 +107,27 @@ smpl_data/
 
 We only provide names of the background images we used. They are downloaded from [LSUN dataset](http://lsun.cs.princeton.edu/2016/index.html) using [this code](https://github.com/fyu/lsun). You can download images from this dataset or use any other images.
 
-#### 2.1.3. Blender
-You need to download [Blender](http://download.blender.org/release/) and install scipy package to run the first part of the code. The provided code was tested with [Blender2.78](http://download.blender.org/release/Blender2.78/blender-2.78a-linux-glibc211-x86_64.tar.bz2), which is shipped with its own python executable as well as distutils package. Therefore, it is sufficient to do the following:
+#### 2.1.3. Blender (edited by Zhaoyang):
+
+Instead of using building blending from bell and whistles, I use this ppa for blender install (most recent now is 2.79), which has OSL built-in support.
+
+Do not use system built-in blender (2.76), which does not have full support for Open Shading Language.
+
+One advantage to install blender with this ppa is that you can install all the python modules with python3 in your system. And no need for python3 & blender configuration. 
+
+~~You need to download [Blender](http://download.blender.org/release/) and install scipy package to run the first part of the code. The provided code was tested with [Blender2.78](http://download.blender.org/release/Blender2.78/blender-2.78a-linux-glibc211-x86_64.tar.bz2), which is shipped with its own python executable as well as distutils package. Therefore, it is sufficient to do the following:~~
 
 ``` shell
 # Install pip
-/blenderpath/2.78/python/bin/python3.5m get-pip.py
+#/blenderpath/2.78/python/bin/python3.5m get-pip.py
 # Install scipy
-/blenderpath/2.78/python/bin/python3.5m pip install scipy
+#/blenderpath/2.78/python/bin/python3.5m pip install scipy
 ```
 
-`get-pip.py` is downloaded from [pip](https://pip.pypa.io/en/stable/installing/). Replace the `blenderpath` with your own and set `BLENDER_PATH`.
+~~`get-pip.py` is downloaded from [pip](https://pip.pypa.io/en/stable/installing/). Replace the `blenderpath` with your own and set `BLENDER_PATH`.~~
 
-Otherwise, you might need to point to your system installation of python, but be prepared for unexpected surprises due to version mismatches. There may not be support about questions regarding this installation.
+~~Otherwise, you might need to point to your system installation of python, but be prepared for unexpected surprises due to version mismatches. There may not be support about questions regarding this installation.~~
+
 
 #### 2.1.4. FFMPEG
 If you want to save the rendered images as videos, you will need [ffmpeg](https://ffmpeg.org/) library. Build it and set the `FFMPEG_PATH` to the directory that contains `lib/` and `bin/` folders. Additionally, if you want to use H.264 codec as it is done in the current version of the code, you need to have the [x264](http://www.videolan.org/developers/x264.html) libraries compiled. In that case, set `X264_PATH` to your build. If you use another codec, you don't need `X264_PATH` variable and you can remove `-c:v h264` from `main_part1.py`.
@@ -129,7 +137,7 @@ This is how the ffmpeg was built:
 ``` shell
 # x264
 ./configure  --prefix=/home/gvarol/tools/ffmpeg/x264_build --enable-static --enable-shared --disable-asm
-make 
+make
 make install
 
 # ffmpeg
@@ -206,7 +214,7 @@ We provide 4 pre-trained models for segmentation and depth, either trained using
 
 Use the demo script to apply these models on sample images.
 
-``` shell 
+``` shell
 qlua demo/demo.lua
 ```
 
@@ -236,4 +244,3 @@ Please check the [license terms](https://github.com/gulvarol/surreal/blob/master
 The data generation code is built by [Javier Romero](https://github.com/libicocco/), [Gul Varol](https://github.com/gulvarol) and [Xavier Martin](https://github.com/martin-xavier).
 
 The training code is written by [Gul Varol](https://github.com/gulvarol) and is largely built on the ImageNet training example [https://github.com/soumith/imagenet-multiGPU.torch](https://github.com/soumith/imagenet-multiGPU.torch) by [Soumith Chintala](https://github.com/soumith/).
-
